@@ -3,24 +3,26 @@ import 'dart:convert';
 import 'dart:async';
 import 'package:http/http.dart' as http;
 
-import 'package:zoombox_practice/json/serializers.dart';
-
 class NewsDataRepoProc implements NewsRepository {
   final String URL = "https://zoombangla.com/api/index.php?task=selected_news";
+  Map data;
+  List userDataList;
 
   @override
   Future<List<NewsData>> fetchNewsData() async {
-//    http.Response response = await http.get(URL_POST);
-//    final List responseBody = converter.JsonDecoder as List;
+    http.Response response = await http.get(URL);
+    data = json.decode(response.body);
+    userDataList = data["items"];
 
-    final response = await http.get((Uri.parse(URL)));
+    List<NewsData> newsList =
+        userDataList.map((c) => new NewsData.fromMap(c)).toList();
 
-    print(response.body.toString());
+    print("totalNews: ${newsList.length} ");
+    for (int i = 0; i < userDataList.length; i++) {
+      print(
+          "p_id: ${newsList.elementAt(i).p_id} \n imgUrl: ${newsList.elementAt(i).img_src}");
+    }
 
-    NewsData data = serializers.deserializeWith(
-        NewsData.serializer, json.decode(response.body));
-    return data.items.map((Data data) => data).toList();
-
-    return null;
+    return newsList;
   }
 }

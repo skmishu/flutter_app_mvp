@@ -1,6 +1,6 @@
-import 'data/data.dart';
-import 'data/news_data_repo_proc.dart';
-import 'data/news_data_repo_moc.dart';
+import '../data/data.dart';
+import '../data/news_data_repo_proc.dart';
+import '../data/news_data_repo_moc.dart';
 
 enum Flavor { MOCK, PROD }
 
